@@ -12,6 +12,10 @@ class UsersController extends Controller
 {
     public function show($username)
     {
+      //simulo un error tipo 500
+      //throw new \Exception("Simulando un error");
+
+
       //busco al usuario y muestro los mensajes en una vista, con first me da el primero
       $user = $this->findByUsername($username);
       return view('users.show', [
@@ -98,6 +102,6 @@ class UsersController extends Controller
 
     private function findByUsername($username)
     {
-      return User::where('username',$username)->first();
+      return User::where('username',$username)->firstOrFail();
     }
 }
