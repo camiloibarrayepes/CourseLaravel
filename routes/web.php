@@ -12,7 +12,7 @@
 */
 
 Route::get('/', 'PagesController@home');
-Route::get('/messages/{message}', 'MessagesController@show');
+
 
 
 Auth::routes();
@@ -22,6 +22,9 @@ Route::get('/auth/facebook/callback', 'SocialAuthController@callback');
 Route::post('/auth/facebook/register', 'SocialAuthController@register' );
 
 Route::get('/home', 'HomeController@index');
+
+Route::get('/messages', 'MessagesController@search');
+Route::get('/messages/{message}', 'MessagesController@show');
 
 Route::group(['middleware' => 'auth'], function (){
   Route::post('/messages/create', 'MessagesController@create');
