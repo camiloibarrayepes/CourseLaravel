@@ -72,11 +72,9 @@ class UsersController extends Controller
       $me = $request->user();
       $message = $request->input('message');
 
-      //voy a tener que crear una conversion entre estos dos usuarios
-      $conversation = Conversation::create();
-      //para agregar usuarios a la conversacion
-      $conversation->users()->attach($me);
-      $conversation->users()->attach($user);
+      //para comprobar si hay una conversación previa
+      $conversation = Conversation::between($me, $user);
+
       //voy a crear un mensaje privado mio hacia el usuario (hacia la conversacion)
       $privateMessage = PrivateMessage::create([
         'conversation_id' => $conversation->id,

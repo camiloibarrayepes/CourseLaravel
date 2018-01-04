@@ -17,7 +17,11 @@ separador entre nombre y nombre ', '
   @foreach($conversation->privateMessages as $message)
   <div class="card">
     <div class="card-header">
-      <i>{{ $message->user->name }}</i> dijo...
+      @if($message->user->username === $user->username)
+      <i>Yo dije...</i>
+      @else
+      {{ $message->user->name }} dijo...
+      @endif
     </div>
     <div class="card-block">
       {{ $message->message }}
@@ -25,7 +29,7 @@ separador entre nombre y nombre ', '
     <div class="card-footer">
       {{ $message->created_at }}
     </div>
-  </div>
+  </div><br>
   @endforeach
 </div>
 
