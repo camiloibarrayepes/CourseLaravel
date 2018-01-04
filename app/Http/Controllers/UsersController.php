@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\User;
+use App\Conversation;
+use App\PrivateMessage;
+use Illuminate\Http\Request;
+
 
 class UsersController extends Controller
 {
@@ -59,6 +62,39 @@ class UsersController extends Controller
       return view('users.follows', [
         'user' => $user,
         'follows' => $user->followers,
+      ]);
+    }
+
+    public function sendPrivateMessage($username, Request $request)
+    {
+      $user = $this->findByUsername($username);
+
+      $me = $request->user();
+      $message = $request->input('message');
+
+      //voy a tener que crear una conversion entre estos dos usuarios
+      $conversation = Conversation::create();
+      //para agregar usuarios a la conversacion
+      $conversation->users()->attach($me);
+      $conversation->users()->attach($user);
+      //voy a crear un mensaje privado mio hacia el usuario (hacia la conversacion)
+      $privateMessage = PrivateMessage::create([
+        'conversation_id' => $conversation->id,
+        'user_id' => $me->id,
+        'message' => $message,
+      ]);
+      //redirigir a la vista de la conversacion
+      return redirect('/conversations/'.$conversation->id);
+
+    }
+
+    public function showConversation(Conversation $conversation)
+    {
+      //le digo que cargue usuarios y mensajes
+      $conversation->load('users', 'privateMessages');
+      return view('users.conversation', [
+        'conversation' => $conversation,
+        'user' => auth()->user(),
       ]);
     }
 
