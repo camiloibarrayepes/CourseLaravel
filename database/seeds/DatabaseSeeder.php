@@ -16,11 +16,18 @@ class DatabaseSeeder extends Seeder
         $users = factory(App\User::class, 50)->create();
         //ahora por cada uno de ellos creamos 20 mensajes
         $users->each(function(App\User $user) use ($users){
-          factory(App\Message::class)
+          $messages = factory(App\Message::class)
           ->times(20)
           ->create([
             'user_id' => $user->id,
           ]);
+
+          $messages->each(function (App\Message $message) use ($users){
+            factory(App\Response::class, random_int(1, 10))->create([
+              'message_id' => $message->id,
+              'user_id' => $users->random(1)->first()->id,
+            ]);
+          });
           //y le hacemos seguir a 10 usuarios al azar
           $user->follows()->sync(
             $users->random(10)
