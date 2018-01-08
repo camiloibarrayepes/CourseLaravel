@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Conversation;
 use App\PrivateMessage;
+use App\Notifications\UserFollowed;
 use Illuminate\Http\Request;
 
 
@@ -32,6 +33,9 @@ class UsersController extends Controller
 
       //al usuario logeado de sus follows agregue el usuario en cuestion
       $me->follows()->attach($user);
+
+      //para la notificacion, envio el usuario logeado
+      $user->notify(new UserFollowed($me));
 
       //aqui se redirige al usuario que esta siguiendo
       return redirect("/$username")->withSuccess('Usuario seguido');
