@@ -24,7 +24,7 @@
               </a>
 
 
-                <div class="collapse navbar-default" id="app-navbar-collapse">
+                <div class="navbar-default" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav">
                         <li class="nav-item">
